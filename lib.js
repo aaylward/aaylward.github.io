@@ -5,14 +5,18 @@
   var hasOwn = {}.hasOwnProperty;
   var forEach = [].forEach;
 
-  this.AA = AA = {};
+  this.AA = AA = {
+    linkWorks: false
+  };
 
   if (typeof Object.observe !== 'function') {
     AA.link = function() {
       console.log('Object.observe is not defined. I\'ll get to your browser soon...');
-    }
+    };
     return;
   }
+
+  AA.linkWorks = true;
 
   function updateObjectFromDOM(object, className, event) {
     var newValue = event.target.value;
