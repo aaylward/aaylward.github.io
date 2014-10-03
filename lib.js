@@ -5,6 +5,15 @@
   var hasOwn = {}.hasOwnProperty;
   var forEach = [].forEach;
 
+  this.AA = AA = {};
+
+  if (typeof Object.observe !== 'function') {
+    AA.link = function() {
+      console.log('Object.observe is not defined. I\'ll get to your browser soon...');
+    }
+    return;
+  }
+
   function updateObjectFromDOM(object, className, event) {
     var newValue = event.target.value;
     if (newValue !== object[className]) {
@@ -27,7 +36,6 @@
     }
   }
 
-  this.AA = AA = {};
   AA.link = function(domNode, object) {
     for (var prop in object) {
       if (hasOwn.call(object, prop)) {
