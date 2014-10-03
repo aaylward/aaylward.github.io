@@ -1,12 +1,14 @@
 !(function(undefined) {
   "use strict";
 
-  console.log('is this thing on?')
-
   var hasOwn = {}.hasOwnProperty;
 
-  function bindEvent(context, className, event) {
-    context[className] = event.target.value;
+  function updateObjectFromDOM(object, className, event) {
+    object[className] = event.target.value;
+  }
+
+  function updateDomFromObject(domNode, changes) {
+    console.log(changes);
   }
 
   var AA;
@@ -14,10 +16,15 @@
   AA.link = function(domNode, object) {
     for (var prop in object) {
       if (hasOwn.call(object, prop)) {
+        //find matching node
         var classLinkedNode = domNode.querySelectorAll('.' + prop)[0];
-        console.log(classLinkedNode);
+
         if (classLinkedNode != null) {
-          classLinkedNode.addEventListener('change', bindEvent.bind(null, object, prop));
+          //bind dom change events
+          classLinkedNode.addEventListener('change', updateObjectFromDOM.bind(null, object, prop));
+
+          //bind object change events
+          Object.observe(object, updateDomFromObject.bind(null, classLinkedNode));
         }
       }
     }
