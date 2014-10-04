@@ -5,12 +5,75 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="wip">[WIP]</div>
   <div>
     <input type="text" placeholder="What even is this?" class="linktest" />
     <span class="linktest"></span>
   </div>
+  <div>
+    <pre>
+!(function(global, undefined) {
+  "use strict";
+
+  var AA;
+  var hasOwn = {}.hasOwnProperty;
+  var forEach = [].forEach;
+
+  global.AA = AA = {
+    linkWorks: false
+  };
+
+  if (typeof Object.observe !== 'function') {
+    AA.link = function() {
+      console.log('Object.observe is not defined. I\'ll get to your browser soon...');
+    };
+    return;
+  }
+
+  AA.linkWorks = true;
+
+  function updateObjectFromDOM(object, className, event) {
+    var newValue = event.target.value;
+    if (newValue !== object[className]) {
+      object[className] = event.target.value;
+    }
+  }
+
+  function updateDomFromObject(domNode, prop, changes) {
+    var newValue = changes[0].object[prop];
+    var contentProperty;
+
+    if (typeof domNode.value === 'undefined') {
+      contentProperty = 'textContent';
+    } else {
+      contentProperty = 'value';
+    }
+
+    if (newValue !== domNode[contentProperty]) {
+      domNode[contentProperty] = newValue;
+    }
+  }
+
+  AA.link = function(domNode, object) {
+    for (var prop in object) {
+      if (hasOwn.call(object, prop)) {
+        var targetNodes = domNode.querySelectorAll('.' + prop);
+
+        forEach.call(targetNodes, function(targetNode) {
+          
+          targetNode.addEventListener('change', updateObjectFromDOM.bind(null, object, prop));
+          targetNode.addEventListener('keyup', updateObjectFromDOM.bind(null, object, prop));
+
+          Object.observe(object, updateDomFromObject.bind(null, targetNode, prop));
+        });
+      }
+    }
+  }
+}).call(null, (1,eval)("this"));
+    </pre>
+  </div>
+  <script type="text/javascript" src="lib.js"></script>
+  <script type="text/javascript" src="app.js"></script>
 </body>
-<script type="text/javascript" src="lib.js"></script>
-<script type="text/javascript" src="app.js"></script>
 </html>
 

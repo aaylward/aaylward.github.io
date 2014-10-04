@@ -1,11 +1,11 @@
-!(function(undefined) {
+!(function(global, undefined) {
   "use strict";
 
   var AA;
   var hasOwn = {}.hasOwnProperty;
   var forEach = [].forEach;
 
-  this.AA = AA = {
+  global.AA = AA = {
     linkWorks: false
   };
 
@@ -55,5 +55,5 @@
       }
     }
   }
-}).call((1,eval)("this"));
+}).call(null, (1,eval)("this"));
 
